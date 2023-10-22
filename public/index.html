@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <title>Chat</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<!-- Add this code inside your <body> element -->
+    <div id="usernameModal" class="modal">
+        <div class="modal-content">
+            <h2>Welcome to AnkiyCodes Chat</h2>
+            <p>Please enter your username:</p>
+            <input type="text" id="usernameInput" placeholder="Enter your name">
+            <button id="submitUsername">Submit</button>
+        </div>
+    </div>
+    
+    <div class="main">
+        <!-- <a href="https://www.instagram.com/ankiycodes/?hl=en">
+            <h1>
+                AnkiyCodes Chat
+            </h1>
+        </a> -->
+        <div class="name">
+            <div style="display: flex; align-items: center; justify-content: space-between;">
+                
+                <i id="userLogo" class="fas fa-user"></i>
+                <input type="text" name="name" maxlength="20" id="name" value="anonymous" placeholder="Enter your name" />
+                <div class="dark-mode-switch">
+                    <label class="switch">
+                        <input type="checkbox" id="darkModeToggle">
+                        <span class="slider round"></span>
+                    </label>
+                    <!-- <span class="dark-mode-label">Dark Mode</span> -->
+                </div>
+                <h3 class="client-total" id="client-total">
+                 🟢 0
+                </h3>
+            </div>
+        </div>
+        <ul class="message-container" id="message-container">
+            <!-- <li class="msg-left">
+                <p class="msg"> Lorem ipsum
+                    <br>
+                    <span>Me By 25 July 10:40</span>
+
+                </p>
+            </li>
+            <li class="msg-right">
+                <p class="msg"> Lorem ipsum <br>
+                    <span>Me By 25 July 10:40</span>
+
+                </p>
+            </li>
+            <li class="msg-feedback">
+                <p class="feedback" id="feedback"> Lorem ipsum is typing...</p>
+            </li> -->
+        </ul>
+        <form class="msg-form" id="msg-form">
+            <input type="text" name="message" id="msg-inp" placeholder="Enter your message" />
+            <hr>
+            <button type="submit" class="btn-send"><i class="fas fa-paper-plane"></i></button>
+        </form>
+    </div>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="moment.min.js" ></script>
+    <script src="main.js"></script>
+    <script src="darkmode.js"></script>
+</body>
+</html>
