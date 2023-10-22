@@ -5,13 +5,14 @@ const nameInp = document.getElementById("name");
 const messageContainer = document.getElementById("message-container");
 const messageForm = document.getElementById("msg-form");
 const messageInp = document.getElementById("msg-inp");
+const sourceUrl = window.location.href
 
 
 
 // A Simple Name Modal
 // Add this JavaScript code to your "main.js" file
 document.addEventListener("DOMContentLoaded", function () {
-    console.log("DOM loaded");
+    // console.log("DOM loaded");
     const usernameModal = document.getElementById("usernameModal");
     const usernameInput = document.getElementById("usernameInput");
     const submitUsername = document.getElementById("submitUsername");
@@ -32,6 +33,9 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 });
 
+messageInp.addEventListener("blur", () => {
+    clearFeedback();
+});
 
 messageInp.addEventListener("focus", () => {
     socket.emit("feedback", nameInp.value);
@@ -39,9 +43,14 @@ messageInp.addEventListener("focus", () => {
 
 messageInp.addEventListener("keypress", () => {
     socket.emit("feedback", nameInp.value);
+    clearTimeout(typingTimeout);
+    const typingTimeout = setTimeout(() => {
+        socket.emit("notyping", true);
+    }, 1500); // Adjust the timeout duration as needed (e.g., 1500 milliseconds)
 });
 
 socket.on('feedback', (data) => {
+    if (data === '') return
     clearFeedback()
     const element = `
           <li class="msg-feedback">
@@ -49,16 +58,19 @@ socket.on('feedback', (data) => {
           </li>
     `
     messageContainer.innerHTML += element
-  })
-  
-  function clearFeedback() {
+
+    sendPushNotification('AnkiyCodes', data, sourceUrl);
+})
+
+function clearFeedback() {
     document.querySelectorAll('li.msg-feedback').forEach((element) => {
-      element.parentNode.removeChild(element)
+        element.parentNode.removeChild(element)
     })
-  }
+}
 
-
-
+socket.on('notyping', (data) => {
+    clearFeedback()
+});
 
 messageForm.addEventListener("submit", (e) => {
     e.preventDefault();
@@ -69,26 +81,28 @@ function sendMessage() {
     const data = {
         name: nameInp.value,
         message: messageInp.value,
-        date : new Date(),
-        ip : ""
+        date: new Date(),
+        ip: ""
     };
     socket.emit("message", data);
     messageInp.value = "";
-    appendMessage(true,data);
+    appendMessage(true, data);
+    socket.emit("notyping", true);
 }
 
 socket.on('client-total', (data) => {
-  console.log(data);
-  document.getElementById('client-total').innerHTML = `🟢${data}`;
+    // console.log(data);
+    document.getElementById('client-total').innerHTML = `🟢 ${data}`;
 });
 
 socket.on('message', (data) => {
-    console.log("Server Sent Data : ", data);
+    // console.log("Server Sent Data : ", data);
     appendMessage(false, data);
+    sendPushNotification(data.name, data.message, sourceUrl);
 });
 
 function appendMessage(isOwn, data) {
-    console.log("Message: ", data);
+    // console.log("Message: ", data);
 
     // Determine the class based on isOwn
     const className = isOwn ? "msg-right" : "msg-left";
@@ -106,6 +120,26 @@ function appendMessage(isOwn, data) {
     messageContainer.innerHTML += messageElement;
 }
 
+function sendPushNotification(name, message, sourceUrl) {
+    navigator.serviceWorker.register('sw.js');
 
-
-
+    if ('Notification' in window) {
+        Notification.requestPermission().then(function (permission) {
+            if (permission === 'granted') {
+                const options = {
+                    body: message,
+                    icon: '/icon.png',
+                    badge: '/badge.png',
+                    vibrate: [200, 100, 200],
+                };
+                navigator.serviceWorker.ready.then(function (registration) {
+                    registration.showNotification(name, options);
+                });
+            } else {
+                Notification.requestPermission();
+            }
+        });
+    } else {
+        console.log('Notification API is not supported in this browser.');
+    }
+}

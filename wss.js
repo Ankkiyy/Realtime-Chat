@@ -23,13 +23,20 @@ io.on('connection', (socket) => {
   socket.on('disconnect', () => { onDisconnected(socket); });
 
   socket.on('message', (data) => {
-    console.log('Message received on server:', data);
+    const clientIp = socket.handshake.address;
+    data.ip = clientIp;
+    // console.log('Message received on server:', data);
    socket.broadcast.emit('message', data);
 
   });
 
+  socket.on('notyping', (data) => {
+    // console.log('Typing received on server:', data);
+    socket.broadcast.emit('notyping', true);
+  })
+
   socket.on('feedback', (data) => {
-    console.log('Feedback received on server:', data);
+    // console.log('Feedback received on server:', data);
     socket.broadcast.emit('feedback', `${data} is Typing ...`);
   })
 
