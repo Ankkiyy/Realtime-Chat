@@ -8,7 +8,7 @@
     "dev": "nodemon wss.js"
   },
   "keywords": [],
-  "author": "",
+  "author": "Ankkiyy",
   "license": "ISC",
   "dependencies": {
     "express": "^4.18.2",

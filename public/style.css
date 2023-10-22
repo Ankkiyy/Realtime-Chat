@@ -133,11 +133,21 @@ h1 {
 }
 
 /* Message form */
+/* Message form */
 .msg-form {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
     display: flex;
-    flex-grow: 0.005;
     align-items: center;
+    width: 800px;
+    margin: 0 auto;
+    padding: 10px;
+    background-color: #fff;
+    z-index: 999; /* Ensures it's above other content */
 }
+
 
 .msg-form input[type="text"] {
     padding: 10px;
