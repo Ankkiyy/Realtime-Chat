@@ -14,13 +14,11 @@ Technologies Used:
 Front-end: HTML, CSS, JavaScript
 Back-end: Node.js, Express.js
 Real-time Communication: Socket.io
-Deployment: Firebase
+Deployment: Render
 Getting Started:
 
-To use the Realtime-Chat application, simply navigate to [LINK_TO_APPLICATION] and create your account to start communicating instantly with others!
+To use the Realtime-Chat application, simply navigate to [`https://my-groupchat.onrender.com`] and create your account to start communicating instantly with others!
 
 Project Status:
 
 This project is under active development and is continuously being enhanced to provide a better and more feature-rich user experience.
-
-Hosted At `https://my-groupchat.onrender.com`
