@@ -30,6 +30,12 @@ io.on('connection', (socket) => {
 
   });
 
+  socket.on('image', (data) => {
+    const clientIp = socket.handshake.address;
+    data.ip = clientIp;
+    socket.broadcast.emit('image', data);
+  });
+
   socket.on('notyping', (data) => {
     // console.log('Typing received on server:', data);
     socket.broadcast.emit('notyping', true);
